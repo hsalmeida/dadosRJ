@@ -1,0 +1,64 @@
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+
+.hidden{ display: none; }
+
+
+#searchBox {
+    width: 90%;
+    height: 25px;
+    margin: 10px 4%;
+    position: fixed;
+    border-radius: 5px;
+    padding: 8px 0 6px 6px;
+    background-color: #FFF;
+    border: 1px solid #AAA;
+}
+
+#searchBox input{
+	margin: 0;
+	float: left;
+	border: none;
+	height: 1.4em;
+	padding: 0 6px;
+	font-size: 17px;
+	background-color: #FFF;
+}
+
+@media (max-width: 280px){
+	#searchBox input{ width: 70%; }
+}
+
+@media (min-width: 281px) and (max-width: 320px){
+	#searchBox input{ width: 77%; }
+}
+
+@media (min-width: 321px) and (max-width: 400px){
+	#searchBox input{ width: 80%; }
+}
+
+@media (min-width: 401px){
+	#searchBox{
+		width: 340px !important;
+		margin: 10px 10px !important;
+	}
+}
+
+#searchBox button{
+	width: 35px;
+	float: right;
+	border: none;
+	text-align: center;
+	background-color: #FFF;
+}
+
+img.icon{
+	width: 17px;
+	height: 17px;
+	float: right;
+}
