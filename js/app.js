@@ -5,7 +5,7 @@ var app = {
         app.createMap();
         browserSupportFlag = true;
         navigator.geolocation.getCurrentPosition(function(position) {
-          app.geolocationSuccess,
+          app.geolocationSuccess(position),
           app.geolocationError
         });
       } else {
