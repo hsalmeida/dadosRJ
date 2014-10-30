@@ -28,6 +28,7 @@ body {
 	padding: 0 6px;
 	font-size: 17px;
 	background-color: #FFF;
+	width: 290px;
 }
 
 @media (max-width: 280px){
