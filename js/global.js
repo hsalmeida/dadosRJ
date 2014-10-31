@@ -106,7 +106,7 @@ function findBus(clicked){
     $.getJSON("http://dadosabertos.rio.rj.gov.br/apiTransporte/apresentacao/rest/index.cfm/obterPosicoesDaLinha/" + currentLine,{
         },
         function(data, status){
-			console.log (status);
+			      console.log (status);
             if(data.DATA.length==0)
                 console.log("nenhum dado");
             else{
@@ -121,7 +121,6 @@ function findBus(clicked){
                         bounds.extend(markersPositions[i]);
                      map.fitBounds(bounds);
                 }
-
 
                 clearTimeout(loadTimeout);
                 loadTimeout = setTimeout(function(){ findBus(false); }, 15000);
@@ -139,6 +138,7 @@ function findBus(clicked){
 function btnClick() {
 	$("#busLine").blur();
     findBus(true);
+    desenhaShape();
 }
 
 $("#search").on("click", function(event){
@@ -146,3 +146,61 @@ $("#search").on("click", function(event){
     $("#busLine").blur();
     findBus(true);
 });
+
+function desenhaShape(){
+  currentLine = $("#busLine").val();
+  $.ajax("http://dadosabertos.rio.rj.gov.br/apiTransporte/Apresentacao/csv/gtfs/onibus/percursos/gtfs_linha"+ currentLine +"-shapes.csv")
+  .success(function (data, status, jqXHR){
+    //fazer o shape do caminho do onibus
+    var obj = Papa.parse(data);
+
+    var arrayDados = obj.data;
+    //removo o cabeçalho
+    arrayDados.shift();
+    var ida = false;
+    var coordenadasIda = [];
+    var coordenadasVolta = [];
+
+    for(var i = 0; i < arrayDados.length; i++) {
+      var ponto = arrayDados[i];
+      var lat = ponto[5];
+      var lng = ponto[6];
+      var ordem = ponto[3];
+
+      var coordenada = new google.maps.LatLng(lat, lng)
+
+      if(i == 0 && ordem == 0) {
+        ida = true;
+      }
+      if(i > 0 && ordem == 0) {
+        ida = false
+      }
+
+      if(ida) {
+        coordenadasIda.push(coordenada);
+      } else {
+        coordenadasVolta.push(coordenada);
+      }
+    }
+
+    var caminhoIda = new google.maps.Polyline({
+      path: coordenadasIda,
+      geodesic: true,
+      strokeColor: '#FF0000',
+      strokeOpacity: 1.0,
+      strokeWeight: 2
+    });
+
+    var caminhoVolta = new google.maps.Polyline({
+      path: coordenadasVolta,
+      geodesic: true,
+      strokeColor: '#00FF00',
+      strokeOpacity: 1.0,
+      strokeWeight: 2
+    });
+
+    caminhoIda.setMap(map);
+    caminhoVolta.setMap(map);
+    console.log(obj);
+  });
+}
