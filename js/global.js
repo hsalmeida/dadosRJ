@@ -218,6 +218,6 @@ function desenhaShape(){
 
     caminhoIda.setMap(map);
     caminhoVolta.setMap(map);
-    console.log(obj);
+    console.log("desenha linha de ida e volta.")
   });
 }
