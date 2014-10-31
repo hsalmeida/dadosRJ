@@ -188,15 +188,15 @@ function desenhaShape(){
       geodesic: true,
       strokeColor: '#FF0000',
       strokeOpacity: 1.0,
-      strokeWeight: 2
+      strokeWeight: 3
     });
 
     var caminhoVolta = new google.maps.Polyline({
       path: coordenadasVolta,
       geodesic: true,
-      strokeColor: '#00FF00',
+      strokeColor: '#0000FF',
       strokeOpacity: 1.0,
-      strokeWeight: 2
+      strokeWeight: 3
     });
 
     caminhoIda.setMap(map);
