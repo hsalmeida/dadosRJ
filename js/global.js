@@ -147,6 +147,16 @@ $("#search").on("click", function(event){
     findBus(true);
 });
 
+var linhas = [];
+
+function limparCoordenadas() {
+  for(var i = 0; i < linhas.length; i++) {
+    if(linhas) {
+      linhas[i].setMap(null);
+    }
+  }
+}
+
 function desenhaShape(){
   currentLine = $("#busLine").val();
   $.ajax("http://dadosabertos.rio.rj.gov.br/apiTransporte/Apresentacao/csv/gtfs/onibus/percursos/gtfs_linha"+ currentLine +"-shapes.csv")
@@ -157,9 +167,13 @@ function desenhaShape(){
     var arrayDados = obj.data;
     //removo o cabeçalho
     arrayDados.shift();
-    var ida = false;
+
+    limparCoordenadas();
+
     var coordenadasIda = [];
     var coordenadasVolta = [];
+
+    var ida = false;
 
     for(var i = 0; i < arrayDados.length; i++) {
       var ponto = arrayDados[i];
@@ -198,6 +212,9 @@ function desenhaShape(){
       strokeOpacity: 1.0,
       strokeWeight: 3
     });
+
+    linhas.push(caminhoIda);
+    linhas.push(caminhoVolta);
 
     caminhoIda.setMap(map);
     caminhoVolta.setMap(map);
