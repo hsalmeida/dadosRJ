@@ -157,6 +157,17 @@ function limparCoordenadas() {
   }
 }
 
+var arrayCores = [
+  "#FF0000",
+  "#0000FF",
+  "#00FF00",
+  "#FF0000",
+  "#00FF00",
+  "#0000FF",
+  "#FF0000",
+  "#0000FF"
+  ];
+
 function desenhaShape(){
   currentLine = $("#busLine").val();
   $.ajax("http://dadosabertos.rio.rj.gov.br/apiTransporte/Apresentacao/csv/gtfs/onibus/percursos/gtfs_linha"+ currentLine +"-shapes.csv")
@@ -173,7 +184,10 @@ function desenhaShape(){
     var coordenadasIda = [];
     var coordenadasVolta = [];
 
-    var ida = false;
+    var ordens = [[]];
+    var indiceOrdens = 0;
+
+    var coordenadas = [];
 
     for(var i = 0; i < arrayDados.length; i++) {
       var ponto = arrayDados[i];
@@ -183,20 +197,33 @@ function desenhaShape(){
 
       var coordenada = new google.maps.LatLng(lat, lng)
 
-      if(i == 0 && ordem == 0) {
-        ida = true;
-      }
       if(i > 0 && ordem == 0) {
-        ida = false
+        indiceOrdens++;
+        ordens[indiceOrdens] = [];
       }
 
-      if(ida) {
-        coordenadasIda.push(coordenada);
-      } else {
-        coordenadasVolta.push(coordenada);
-      }
+      ordens[indiceOrdens].push(coordenada);
+
     }
 
+    console.log("quantidade de ordens = "+ordens.length);
+
+    for(var a = 0; a < ordens.length; a++) {
+      var array = ordens[a];
+      var cor = arrayCores[a];
+      console.log("cor = "+cor);
+      var caminho = new google.maps.Polyline({
+        path: array,
+        geodesic: true,
+        strokeColor: cor,
+        strokeOpacity: 1.0,
+        strokeWeight: 3
+      });
+
+      caminho.setMap(map);
+      linhas.push(caminho);
+    }
+    /*
     var caminhoIda = new google.maps.Polyline({
       path: coordenadasIda,
       geodesic: true,
@@ -219,5 +246,6 @@ function desenhaShape(){
     caminhoIda.setMap(map);
     caminhoVolta.setMap(map);
     console.log("desenha linha de ida e volta.")
+    */
   });
 }
