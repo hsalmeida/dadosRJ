@@ -107,6 +107,7 @@ function findBus(clicked){
         },
         function(data, status){
 			      console.log (status);
+			      mudaBotao(false);
             if(data.DATA.length==0)
                 console.log("nenhum dado");
             else{
@@ -128,6 +129,7 @@ function findBus(clicked){
             }
     }).error(function(e){
 		console.log(e);
+		mudaBotao(false);
 		if (e.responseText.indexOf("Server Error") > -1)
 			console.log("O servidor da prefeitura está fora do ar neste momento. Tente novamente mais tarde.");
 		else
@@ -135,10 +137,19 @@ function findBus(clicked){
     });
 }
 
+function mudaBotao(onOff) {
+  if(onOff) {
+    $(".icon").attr("src","img/loading.gif");
+  } else {
+    $(".icon").attr("src","img/search.png");
+  }
+}
+
 function btnClick() {
-	$("#busLine").blur();
-    findBus(true);
-    desenhaShape();
+  $("#busLine").blur();
+  mudaBotao(true);
+  findBus(true);
+  desenhaShape();
 }
 
 $("#search").on("click", function(event){
