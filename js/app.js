@@ -55,7 +55,7 @@ var app = {
         var marker = new google.maps.Marker({
             position: location,
             map: map,
-            icon: iconBase + 'man_maps.png',
+            icon: iconBase + 'pegman.png',
         });
     }
 };

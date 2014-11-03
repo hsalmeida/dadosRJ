@@ -9,6 +9,8 @@ var currentLine = '';
 var userLocation = false;
 var modalOpen = false;
 var browserSupportFlag = new Boolean();
+var arrayCores = ["#FF0000","#0000FF","#00FF00","#FF0000","#00FF00","#0000FF","#FF0000","#0000FF"];
+var linhas = [];
 
 function addMarker(location, data) {
     markersPositions.push(location);
@@ -37,6 +39,7 @@ function addMarker(location, data) {
                  "Código: " + data[1] + "</br>" +
                  "Hora: " + gpsTime.toLocaleString('pt-BR') + "</br>" +
                  "Velocidade: " + data[5] + " Km/h</br>" +
+                 "Direção: "+ data[6] +"</br>"+
                  "</div>"
     });
     google.maps.event.addListener(marker, 'click', function() {
@@ -103,7 +106,7 @@ google.maps.Map.prototype.clearMarkers = function() {
 
 function findBus(clicked){
     currentLine = $("#busLine").val();
-    $.getJSON("http://dadosabertos.rio.rj.gov.br/apiTransporte/apresentacao/rest/index.cfm/obterPosicoesDaLinha/" + currentLine,{
+    $.getJSON("http://dadosabertos.rio.rj.gov.br/apiTransporte/apresentacao/rest/index.cfm/onibus/" + currentLine,{
         },
         function(data, status){
 			      console.log (status);
@@ -125,15 +128,15 @@ function findBus(clicked){
 
                 clearTimeout(loadTimeout);
                 loadTimeout = setTimeout(function(){ findBus(false); }, 15000);
-                console.log("A busca retornou "+data.DATA.length+" resultados.");
+                //console.log("A busca retornou "+data.DATA.length+" resultados.");
             }
     }).error(function(e){
-		console.log(e);
-		mudaBotao(false);
-		if (e.responseText.indexOf("Server Error") > -1)
-			console.log("O servidor da prefeitura está fora do ar neste momento. Tente novamente mais tarde.");
-		else
-			console.log("Desculpe, ocorreu algum erro. Tente novamente.");
+		  console.log(e);
+		  mudaBotao(false);
+		  if (e.responseText.indexOf("Server Error") > -1)
+			  console.log("O servidor da prefeitura está fora do ar neste momento. Tente novamente mais tarde.");
+		  else
+  			console.log("Desculpe, ocorreu algum erro. Tente novamente.");
     });
 }
 
@@ -158,8 +161,6 @@ $("#search").on("click", function(event){
     findBus(true);
 });
 
-var linhas = [];
-
 function limparCoordenadas() {
   for(var i = 0; i < linhas.length; i++) {
     if(linhas) {
@@ -167,17 +168,6 @@ function limparCoordenadas() {
     }
   }
 }
-
-var arrayCores = [
-  "#FF0000",
-  "#0000FF",
-  "#00FF00",
-  "#FF0000",
-  "#00FF00",
-  "#0000FF",
-  "#FF0000",
-  "#0000FF"
-  ];
 
 function desenhaShape(){
   currentLine = $("#busLine").val();
@@ -191,9 +181,6 @@ function desenhaShape(){
     arrayDados.shift();
 
     limparCoordenadas();
-
-    var coordenadasIda = [];
-    var coordenadasVolta = [];
 
     var ordens = [[]];
     var indiceOrdens = 0;
@@ -217,12 +204,9 @@ function desenhaShape(){
 
     }
 
-    console.log("quantidade de ordens = "+ordens.length);
-
     for(var a = 0; a < ordens.length; a++) {
       var array = ordens[a];
       var cor = arrayCores[a];
-      console.log("cor = "+cor);
       var caminho = new google.maps.Polyline({
         path: array,
         geodesic: true,
@@ -234,29 +218,5 @@ function desenhaShape(){
       caminho.setMap(map);
       linhas.push(caminho);
     }
-    /*
-    var caminhoIda = new google.maps.Polyline({
-      path: coordenadasIda,
-      geodesic: true,
-      strokeColor: '#FF0000',
-      strokeOpacity: 1.0,
-      strokeWeight: 3
-    });
-
-    var caminhoVolta = new google.maps.Polyline({
-      path: coordenadasVolta,
-      geodesic: true,
-      strokeColor: '#0000FF',
-      strokeOpacity: 1.0,
-      strokeWeight: 3
-    });
-
-    linhas.push(caminhoIda);
-    linhas.push(caminhoVolta);
-
-    caminhoIda.setMap(map);
-    caminhoVolta.setMap(map);
-    console.log("desenha linha de ida e volta.")
-    */
   });
 }
