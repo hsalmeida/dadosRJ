@@ -142,9 +142,11 @@ function findBus(clicked){
 
 function mudaBotao(onOff) {
   if(onOff) {
-    $(".icon").attr("src","img/loading.gif");
+    $(".icon").attr("src","img/flipflop.gif");
+    $(".icon").css("width","32px").css("height","32px");
   } else {
-    $(".icon").attr("src","img/search.png");
+    $(".icon").attr("src","img/searchw.png");
+    $(".icon").css("width","34px").css("height","34px");
   }
 }
 

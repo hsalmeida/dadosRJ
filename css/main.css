@@ -55,11 +55,24 @@ body {
 	float: right;
 	border: none;
 	text-align: center;
-	background-color: #FFF;
+	background-color: #4285f4;
+  margin: 0;
+  vertical-align: top;
+  box-sizing: border-box;
+  top: -9px;
+  position: relative;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
+  height: 40px;
+  padding-left: 0;
+  padding-right: 1px;
+  padding-bottom: 3px;
 }
 
 img.icon{
-	width: 20px;
-	height: 20px;
+	width: 34px;
+	height: 34px;
 	float: right;
 }
