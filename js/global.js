@@ -149,18 +149,14 @@ function mudaBotao(onOff) {
     $(".icon").css("width","34px").css("height","34px");
   }
 }
-
-function btnClick() {
-  $("#busLine").blur();
-  mudaBotao(true);
-  findBus(true);
-  desenhaShape();
-}
-
-$("#search").on("click", function(event){
-    event.preventDefault();
-    $("#busLine").blur();
-    findBus(true);
+$( document ).ready(function() {
+  $("#searchBox").submit(function(event){
+      event.preventDefault();
+      $("#busLine").blur();
+      mudaBotao(true);
+      findBus(true);
+      desenhaShape();
+  });
 });
 
 function limparCoordenadas() {
