@@ -48,15 +48,15 @@ body {
 }
 
 @media (max-width: 280px){
-	#searchBox input{ width: 70%; }
+	#searchBox input{ width: 50%; }
 }
 
 @media (min-width: 281px) and (max-width: 320px){
-	#searchBox input{ width: 77%; }
+	#searchBox input{ width: 57%; }
 }
 
 @media (min-width: 321px) and (max-width: 400px){
-	#searchBox input{ width: 80%; }
+	#searchBox input{ width: 60%; }
 }
 
 @media (min-width: 401px){
