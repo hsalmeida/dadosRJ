@@ -157,6 +157,28 @@ $( document ).ready(function() {
       findBus(true);
       desenhaShape();
   });
+
+  $("#searchBox input").hover(
+      function(){
+        $(this).css("background","rgba(255,255,255,.25)");
+      },
+      function(){
+        $(this).css("background","rgba(255,255,255,.15)");
+      }
+    );
+
+  $(".menu-box").click(function (){
+    $("#menu").toggleClass("open");
+  });
+
+  $(".menu-box").hover(
+      function(){
+        $(this).css("opacity","1.0");
+      },
+      function(){
+        $(this).css("opacity","0.6");
+      }
+    );
 });
 
 function limparCoordenadas() {

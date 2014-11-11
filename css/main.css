@@ -29,7 +29,7 @@ body {
 	height: 1.4em;
 	padding: 0 6px;
 	font-size: 17px;
-	background-color: transparent;
+	background: rgba(255,255,255,.15);
 	width: 235px;
 	color: #FFF;
 }
@@ -99,4 +99,41 @@ img.icon{
   position: relative;
   left: -6px;
   background: url(../img/menu.png) no-repeat center;
+  opacity: 0.6;
+  cursor: pointer;
+  -webkit-user-drag: none;
+}
+
+.menu {
+  bottom: 0;
+  left: 0;
+  overflow: visible;
+  position: fixed;
+  width: 232px;
+  top: 56px;
+  z-index: 4;
+  -webkit-transform: translateX(-242px);
+  transform: translateX(-242px);
+  -webkit-transition: -webkit-transform .15s ease-in-out;
+  transition: transform .15s ease-in-out;
+  will-change: top,left;
+}
+
+.open {
+  -webkit-transform: translateX(0);
+  transform: translateX(0);
+}
+
+.interna{
+  background: #fff;
+  bottom: 0;
+  box-shadow: 0 0 4px rgba(0,0,0,.14),2px 4px 8px rgba(0,0,0,.28);
+  color: #757575;
+  line-height: 40px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: absolute;
+  white-space: nowrap;
+  width: 232px;
+  top: 0;
 }

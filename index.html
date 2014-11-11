@@ -31,11 +31,20 @@
 <body onload="app.initialize();">
 	<div class="app">
 		<div id="map_canvas" style="position:absolute; width: 100%; height: 100%;"></div>
-  		<form id="searchBox" class="shadow">
-  		  <div id="menuBox" class="menu-box"></div>
-  			<input type="text" id="busLine" placeholder="Número da linha" title="Buscar">
-  			<button id="search"><img class="icon" src="img/searchw.png"></button>
-  		</form>
+		<form id="searchBox" class="shadow">
+		  <div id="menuBox" class="menu-box"></div>
+			<input type="text" id="busLine" placeholder="Número da linha" title="Buscar">
+			<button id="search"><img class="icon" src="img/searchw.png"></button>
+		</form>
+		<div id="menu" class="menu">
+		  <div class="interna">
+		    <ul>
+		      <li>Trafego</li>
+		      <li>Trajeto</li>
+		      <li>Pontos</li>
+		    </ul>
+		  </div>
+		</div>
 	</div>
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
