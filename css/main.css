@@ -3,6 +3,8 @@ body {
     padding: 0;
     width: 100%;
     height: 100%;
+    font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
+    font-size: 82.5%;
 }
 
 .shadow {
@@ -136,4 +138,44 @@ img.icon{
   white-space: nowrap;
   width: 232px;
   top: 0;
+}
+
+ul {
+  list-style: none;
+}
+
+.div-ck {
+  overflow: hidden;
+  position: relative;
+  width: 28px;
+  padding: 14px 22px;
+}
+
+.ck {
+  height: 18px;
+  margin: 5px;
+  line-height: 0;
+  width: 18px;
+  -webkit-user-drag: none;
+  background-size: 18px;
+  display: block;
+}
+
+.ck.ckon {
+  background-image: url(../img/check_box_on.png);
+}
+
+.div-span {
+  display: inline-block;
+  overflow: hidden;
+  padding-top: 16px;
+  text-overflow: ellipsis;
+}
+
+.linha {
+  white-space: nowrap;
+  position: relative;
+  cursor: pointer;
+  display: -webkit-flex;
+  display: flex;
 }
