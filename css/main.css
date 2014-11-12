@@ -141,7 +141,11 @@ img.icon{
 }
 
 ul {
+  border-bottom: 1px solid #e5e5e5;
+  box-sizing: border-box;
   list-style: none;
+  padding: 0 0 8px 0;
+  position: relative;
 }
 
 .div-ck {
@@ -168,8 +172,9 @@ ul {
 .div-span {
   display: inline-block;
   overflow: hidden;
-  padding-top: 16px;
+  padding-top: 6px;
   text-overflow: ellipsis;
+  font-weight: bold;
 }
 
 .linha {
@@ -178,4 +183,24 @@ ul {
   cursor: pointer;
   display: -webkit-flex;
   display: flex;
+  background: #fff;
+}
+
+.ix {
+  bottom: 0;
+  box-shadow: 0 0 2px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.24);
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  pointer-events: none;
+}
+
+.lu {
+  background: #e5e5e5;
+  height: 1px;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: -1px;
 }
