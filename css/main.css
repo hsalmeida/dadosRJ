@@ -157,7 +157,7 @@ ul {
 
 .ck {
   height: 18px;
-  margin: 5px;
+  margin: 12px;
   line-height: 0;
   width: 18px;
   -webkit-user-drag: none;
@@ -169,12 +169,14 @@ ul {
   background-image: url(../img/check_box_on.png);
 }
 
+.ck.ckoff {
+  background-image: url(../img/check_box_out.png);
+}
+
 .div-span {
   display: inline-block;
-  overflow: hidden;
-  padding-top: 6px;
-  text-overflow: ellipsis;
-  font-weight: bold;
+  padding-left: 5px;
+  vertical-align: middle;
 }
 
 .linha {
@@ -203,4 +205,16 @@ ul {
   position: absolute;
   right: 0;
   top: -1px;
+}
+
+.lista li:hover {
+  background: rgba(0,0,0,.03);
+}
+
+.lista li {
+  cursor: pointer;
+  font-weight: bold;
+  display: -webkit-flex;
+  display: flex;
+  padding: 4px 0 4px 24px;
 }
