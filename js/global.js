@@ -150,6 +150,7 @@ function mudaBotao(onOff) {
   }
 }
 $( document ).ready(function() {
+
   $("#searchBox").submit(function(event){
       event.preventDefault();
       $("#busLine").blur();
@@ -169,16 +170,30 @@ $( document ).ready(function() {
 
   $(".menu-box").click(function (){
     $("#menu").toggleClass("open");
+    $("#menuBox").toggleClass("openmenu");
   });
 
   $(".menu-box").hover(
-      function(){
-        $(this).css("opacity","1.0");
-      },
-      function(){
-        $(this).css("opacity","0.6");
-      }
-    );
+    function(){
+      $(this).css("opacity","1.0");
+    },
+    function(){
+      $(this).css("opacity","0.6");
+    }
+  );
+
+  $(".lista li").click(function(){
+    var span = $(this).next();
+    if($(span).hasClass("ckon")){
+      $(span).removeClass("ckon");
+      $(span).addClass("ckoff");
+    } else {
+      $(span).removeClass("ckoff");
+      $(span).addClass("ckon");
+    }
+  });
+
+
 });
 
 function limparCoordenadas() {
