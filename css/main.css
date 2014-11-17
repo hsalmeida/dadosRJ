@@ -52,7 +52,7 @@ body {
     /* IE 10+ */
     color: #FFF;
 }
-/*
+
 @media (max-width: 280px){
 	#searchBox input{ width: 50%; }
 }
@@ -64,7 +64,7 @@ body {
 @media (min-width: 321px) and (max-width: 400px){
 	#searchBox input{ width: 60%; }
 }
-
+/*
 @media (min-width: 401px){
 	#searchBox{
 		width: 340px !important;
