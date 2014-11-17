@@ -10,11 +10,6 @@ var app = {
         });
       } else {
     		app.createMap();
-    		var url = (document.URL).split("?");
-    		if (url.length > 1) {
-    			$("#busLine").val(url[1]);
-    			findBus(true);
-    		}
       }
     },
     geolocationSuccess: function(position){
@@ -29,27 +24,33 @@ var app = {
         app.createMap();
     },
     createMap: function(){
-        var mapDiv = document.getElementById("map_canvas");
+      var mapDiv = document.getElementById("map_canvas");
 
-		var noPoi = [
-		{
-			featureType: "poi",
-			stylers: [
-			  { visibility: "off" }
-			]
-		  }
-		];
+  		var noPoi = [
+  		{
+  			featureType: "poi",
+  			stylers: [
+  			  { visibility: "off" }
+  			]
+  		  }
+  		];
 
-        var location = (userLocation)? userLocation : new google.maps.LatLng(-22.9083, -43.1964);
-        map = new google.maps.Map(mapDiv, {
-            center: location,
-            zoom: 12,
-            mapTypeId: google.maps.MapTypeId.ROADMAP,
-			mapTypeControl: false,
-			streetViewControl: false,
-			disableDefaultUI: true,
-			styles: noPoi
-        });
+      var location = (userLocation)? userLocation : new google.maps.LatLng(-22.9083, -43.1964);
+      map = new google.maps.Map(mapDiv, {
+          center: location,
+          zoom: 12,
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+    			mapTypeControl: false,
+    			streetViewControl: false,
+    			disableDefaultUI: true,
+    			styles: noPoi
+      });
+
+      if(checkOpcoes) {
+        if(checkOpcoes.tg == "ck ckon") {
+          trafficLayer.setMap(map);
+        }
+      }
     },
     showDevicePosition: function(location){
         var marker = new google.maps.Marker({

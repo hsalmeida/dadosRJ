@@ -11,6 +11,8 @@ var modalOpen = false;
 var browserSupportFlag = new Boolean();
 var arrayCores = ["#FF0000","#0000FF","#00FF00","#FF0000","#00FF00","#0000FF","#FF0000","#0000FF"];
 var linhas = [];
+var checkOpcoes;
+var trafficLayer = new google.maps.TrafficLayer();
 
 function addMarker(location, data) {
     markersPositions.push(location);
@@ -149,7 +151,67 @@ function mudaBotao(onOff) {
     $(".icon").css("width","34px").css("height","34px");
   }
 }
+
+function gerarCookie(strCookie, strValor, lngDias) {
+  /*
+  $.cookie(strCookie, strValor, {
+    expires : lngDias
+  });
+  */
+  localStorage.setItem(strCookie, strValor);
+}
+
+function mudaClass(span, valor) {
+    if(valor == "ck ckoff"){
+      $(span).removeClass("ckon");
+      $(span).addClass("ckoff");
+    } else {
+      $(span).removeClass("ckoff");
+      $(span).addClass("ckon");
+    }
+}
+
+function lerCookie(nomeCookie) {
+  //var piraque = $.cookie(nomeCookie);
+  var piraque = localStorage[nomeCookie];
+  if (piraque) {
+    checkOpcoes = JSON.parse(piraque);
+    //tg tj pt
+    mudaClass($("#tg").children("span"), checkOpcoes.tg);
+    mudaClass($("#tj").children("span"), checkOpcoes.tj);
+    mudaClass($("#pt").children("span"), checkOpcoes.pt);
+  }
+}
+/*
+function apagarCookie(strCookie) {
+  $.cookie(strCookie, null);
+}
+*/
+
+function gravarOpcoes(){
+  var options = {};
+  $(".lista li").each(function(index){
+    var id = $(this).attr("id");
+    var span = $(this).children("span");
+    var classe = span.attr('class');
+    options[id] = classe;
+  });
+  var json = JSON.stringify(options);
+  checkOpcoes = options;
+  gerarCookie("dadosRJ", json, 30);
+}
+
 $( document ).ready(function() {
+
+  /*
+  if(typeof(Storage) !== "undefined") {
+    alert("Code for localStorage/sessionStorage.");
+  } else {
+    alert("Sorry! No Web Storage support..");
+  }
+  */
+
+  lerCookie("dadosRJ");
 
   $("#searchBox").submit(function(event){
       event.preventDefault();
@@ -183,7 +245,8 @@ $( document ).ready(function() {
   );
 
   $(".lista li").click(function(){
-    var span = $(this).next();
+    var id = $(this).attr("id");
+    var span = $(this).children("span");
     if($(span).hasClass("ckon")){
       $(span).removeClass("ckon");
       $(span).addClass("ckoff");
@@ -191,10 +254,41 @@ $( document ).ready(function() {
       $(span).removeClass("ckoff");
       $(span).addClass("ckon");
     }
+    gravarOpcoes();
+    atualizaMapa();
   });
 
-
 });
+
+function atualizaMapa(){
+  if(checkOpcoes) {
+    if(checkOpcoes.tg == "ck ckon") {
+      trafficLayer.setMap(map);
+    } else {
+      trafficLayer.setMap(null);
+    }
+
+    if(checkOpcoes.tj == "ck ckon") {
+      if(currentLine) {
+        desenhaShape();
+      }
+    } else {
+      limparCoordenadas();
+    }
+  }
+}
+
+function verificaSelecaoTrajeto() {
+  if(checkOpcoes) {
+    if(checkOpcoes.tj == "ck ckon") {
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    return false;
+  }
+}
 
 function limparCoordenadas() {
   for(var i = 0; i < linhas.length; i++) {
@@ -205,53 +299,58 @@ function limparCoordenadas() {
 }
 
 function desenhaShape(){
-  currentLine = $("#busLine").val();
-  $.ajax("http://dadosabertos.rio.rj.gov.br/apiTransporte/Apresentacao/csv/gtfs/onibus/percursos/gtfs_linha"+ currentLine +"-shapes.csv")
-  .success(function (data, status, jqXHR){
-    //fazer o shape do caminho do onibus
-    var obj = Papa.parse(data);
 
-    var arrayDados = obj.data;
-    //removo o cabeçalho
-    arrayDados.shift();
+  if(verificaSelecaoTrajeto()) {
 
-    limparCoordenadas();
+    currentLine = $("#busLine").val();
+    $.ajax("http://dadosabertos.rio.rj.gov.br/apiTransporte/Apresentacao/csv/gtfs/onibus/percursos/gtfs_linha"+ currentLine +"-shapes.csv")
+    .success(function (data, status, jqXHR){
+      //fazer o shape do caminho do onibus
+      var obj = Papa.parse(data);
 
-    var ordens = [[]];
-    var indiceOrdens = 0;
+      var arrayDados = obj.data;
+      //removo o cabeçalho
+      arrayDados.shift();
 
-    var coordenadas = [];
+      limparCoordenadas();
 
-    for(var i = 0; i < arrayDados.length; i++) {
-      var ponto = arrayDados[i];
-      var lat = ponto[5];
-      var lng = ponto[6];
-      var ordem = ponto[3];
+      var ordens = [[]];
+      var indiceOrdens = 0;
 
-      var coordenada = new google.maps.LatLng(lat, lng)
+      var coordenadas = [];
 
-      if(i > 0 && ordem == 0) {
-        indiceOrdens++;
-        ordens[indiceOrdens] = [];
+      for(var i = 0; i < arrayDados.length; i++) {
+        var ponto = arrayDados[i];
+        var lat = ponto[5];
+        var lng = ponto[6];
+        var ordem = ponto[3];
+
+        var coordenada = new google.maps.LatLng(lat, lng)
+
+        if(i > 0 && ordem == 0) {
+          indiceOrdens++;
+          ordens[indiceOrdens] = [];
+        }
+
+        ordens[indiceOrdens].push(coordenada);
+
       }
 
-      ordens[indiceOrdens].push(coordenada);
+      for(var a = 0; a < ordens.length; a++) {
+        var array = ordens[a];
+        var cor = arrayCores[a];
+        var caminho = new google.maps.Polyline({
+          path: array,
+          geodesic: true,
+          strokeColor: cor,
+          strokeOpacity: 1.0,
+          strokeWeight: 3
+        });
 
-    }
+        caminho.setMap(map);
+        linhas.push(caminho);
+      }
+    });
 
-    for(var a = 0; a < ordens.length; a++) {
-      var array = ordens[a];
-      var cor = arrayCores[a];
-      var caminho = new google.maps.Polyline({
-        path: array,
-        geodesic: true,
-        strokeColor: cor,
-        strokeOpacity: 1.0,
-        strokeWeight: 3
-      });
-
-      caminho.setMap(map);
-      linhas.push(caminho);
-    }
-  });
+  }
 }
