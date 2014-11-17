@@ -126,7 +126,7 @@ img.icon{
   -webkit-transition: -webkit-transform .15s ease-in-out;
   transition: transform .15s ease-in-out;
   will-change: top,left;
-  height: 200px;
+  height: 235px;
 }
 
 .open {

@@ -13,6 +13,11 @@ var arrayCores = ["#FF0000","#0000FF","#00FF00","#FF0000","#00FF00","#0000FF","#
 var linhas = [];
 var checkOpcoes;
 var trafficLayer = new google.maps.TrafficLayer();
+var bikeMarkers = [];
+
+function addBikeMarker(location, data) {
+
+}
 
 function addMarker(location, data) {
     markersPositions.push(location);
@@ -180,6 +185,7 @@ function lerCookie(nomeCookie) {
     mudaClass($("#tg").children("span"), checkOpcoes.tg);
     mudaClass($("#tj").children("span"), checkOpcoes.tj);
     mudaClass($("#pt").children("span"), checkOpcoes.pt);
+    mudaClass($("#br").children("span"), checkOpcoes.br);
   }
 }
 /*
@@ -275,7 +281,44 @@ function atualizaMapa(){
     } else {
       limparCoordenadas();
     }
+
+    if(checkOpcoes.br == "ck ckon") {
+      desenhaBikeRio();
+    } else {
+      limparBikeRio();
+    }
   }
+}
+
+function desenharBikeRio(){
+  limparBikeRio();
+
+  $.getJSON("http://dadosabertos.rio.rj.gov.br/apiTransporte/apresentacao/rest/index.cfm/estacoesBikeRio",{
+      },
+      function(data, status){
+		      console.log (status);
+		      mudaBotao(false);
+          if(data.DATA.length==0)
+              console.log("nenhum dado");
+          else{
+
+              for (var i = 0; i < data.DATA.length; i++) {
+                  var latLng = new google.maps.LatLng(data.DATA[i][5], data.DATA[i][6]);
+                  addBikeMarker(latLng, data.DATA[i]);
+              }
+          }
+  }).error(function(e){
+	  console.log(e);
+	  if (e.responseText.indexOf("Server Error") > -1)
+		  console.log("O servidor da prefeitura está fora do ar neste momento. Tente novamente mais tarde.");
+	  else
+			console.log("Desculpe, ocorreu algum erro. Tente novamente.");
+  });
+
+}
+
+function limparBikeRio(){
+
 }
 
 function verificaSelecaoTrajeto() {

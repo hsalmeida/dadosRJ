@@ -50,6 +50,9 @@ var app = {
         if(checkOpcoes.tg == "ck ckon") {
           trafficLayer.setMap(map);
         }
+        if(checkOpcoes.br == "ck ckon") {
+          desenharBikeRio();
+        }
       }
     },
     showDevicePosition: function(location){
