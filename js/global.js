@@ -14,9 +14,33 @@ var linhas = [];
 var checkOpcoes;
 var trafficLayer = new google.maps.TrafficLayer();
 var bikeMarkers = [];
+var bikeMarkersPositions = [];
 
 function addBikeMarker(location, data) {
+  bikeMarkersPositions.push(location);
 
+  var iconUrl = iconBase + "bikeriopin.png";
+  //"BAIRRO","ESTACAO","CODIGO","ENDERECO","NUMERO","LATITUDE","LONGITUDE"
+  var marker = new google.maps.Marker({
+        position: location,
+        map: map,
+        title: data[3],
+        icon: new google.maps.MarkerImage(iconUrl)
+  });
+
+  marker.info = new google.maps.InfoWindow({
+      content: '<div style="line-height:1.35;overflow:hidden;white-space:nowrap;">' +
+               "Bairro: " + data[0] + "</br>" +
+               "Estação: " + data[1] + "</br>" +
+               "Endereço: " + data[3] + "</br>" +
+               "</div>"
+  });
+  google.maps.event.addListener(marker, 'click', function() {
+      marker.info.close();
+      marker.info.open(map, marker);
+  });
+
+  bikeMarkers.push(marker);
 }
 
 function addMarker(location, data) {
@@ -283,7 +307,7 @@ function atualizaMapa(){
     }
 
     if(checkOpcoes.br == "ck ckon") {
-      desenhaBikeRio();
+      desenharBikeRio();
     } else {
       limparBikeRio();
     }
@@ -318,7 +342,11 @@ function desenharBikeRio(){
 }
 
 function limparBikeRio(){
-
+    for (var i = 0; i < bikeMarkers.length; i++) {
+        bikeMarkers[i].setMap(null);
+    }
+    bikeMarkers = [];
+    bikeMarkersPositions = []
 }
 
 function verificaSelecaoTrajeto() {
