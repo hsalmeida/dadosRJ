@@ -103,6 +103,7 @@ img.icon{
   position: relative;
   left: -6px;
   background: url(../img/menu.png) no-repeat center;
+  background-size: 20px;
   opacity: 0.6;
   cursor: pointer;
   -webkit-user-drag: none;
