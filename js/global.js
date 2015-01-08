@@ -48,7 +48,7 @@ function addMarker(location, data) {
     var dataBR = data[0].substring(3,6) + data[0].substring(0,2) + data[0].substring(5);
     var gpsTime = new Date(Date.parse(dataBR));
 
-	  gpsTime.setHours((gpsTime.getHours() + 1));
+	  //gpsTime.setHours((gpsTime.getHours() + 1));
 
     var iconUrl;
     if ((new Date() - gpsTime)/1000/60 > 10) {
