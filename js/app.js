@@ -1,6 +1,23 @@
 var app = {
     openModal: false,
     initialize: function(){
+
+      toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "progressBar": true,
+        "positionClass": "toast-bottom-center",
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+      }
+
       if(navigator.geolocation) {
         app.createMap();
         browserSupportFlag = true;
@@ -20,7 +37,8 @@ var app = {
         app.showDevicePosition(userLocation);
     },
     geolocationError: function(error){
-        console.log('[ERROR '+ error.code + '] ' + error.message);
+
+		    toastr.error('[ERROR '+ error.code + '] ' + error.message);
         app.createMap();
     },
     createMap: function(){

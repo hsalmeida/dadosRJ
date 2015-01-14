@@ -159,15 +159,15 @@ function findBus(clicked){
 
                 clearTimeout(loadTimeout);
                 loadTimeout = setTimeout(function(){ findBus(false); }, 15000);
-                //console.log("A busca retornou "+data.DATA.length+" resultados.");
+                toastr.success("A busca retornou "+data.DATA.length+" resultados.");
             }
     }).error(function(e){
 		  console.log(e);
 		  mudaBotao(false);
 		  if (e.responseText.indexOf("Server Error") > -1)
-			  console.log("O servidor da prefeitura está fora do ar neste momento. Tente novamente mais tarde.");
+		    toastr.warning("O servidor da prefeitura está fora do ar neste momento. Tente novamente mais tarde.");
 		  else
-  			console.log("Desculpe, ocorreu algum erro. Tente novamente.");
+		    toastr.error("Desculpe, ocorreu algum erro. Tente novamente.");
     });
 }
 
@@ -332,9 +332,9 @@ function desenharBikeRio(){
   }).error(function(e){
 	  console.log(e);
 	  if (e.responseText.indexOf("Server Error") > -1)
-		  console.log("O servidor da prefeitura está fora do ar neste momento. Tente novamente mais tarde.");
-	  else
-			console.log("Desculpe, ocorreu algum erro. Tente novamente.");
+		    toastr.warning("O servidor da prefeitura está fora do ar neste momento. Tente novamente mais tarde.");
+		  else
+		    toastr.error("Desculpe, ocorreu algum erro. Tente novamente.");
   });
 
 }
