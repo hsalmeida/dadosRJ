@@ -19,10 +19,6 @@ var bikeMarkersPositions = [];
 var pontosMarkers = [];
 var pontosMarkersPositions = [];
 
-
-
-
-
 function addBikeMarker(location, data) {
   bikeMarkersPositions.push(location);
 
@@ -405,10 +401,24 @@ function addPontoMarker(location) {
             pontosMarkers.push(marker);
         }else{
             var resultado = data.results[0]
+            var addresComponents = resultado.address_components;
+
+            var numero = addresComponents[0].long_name;
+            var rua = addresComponents[1].long_name;
+            var bairro = addresComponents[2].long_name;
+            var cidade = addresComponents[3].long_name;
+            var cep = "";
+            if(addresComponents.length > 6) {
+              cep = addresComponents[7].long_name;
+            }
+            var loc = resultado.geometry.location;
 
             marker.info = new google.maps.InfoWindow({
                   content: '<div style="line-height:1.35;overflow:hidden;white-space:nowrap;">' +
-                           "Endereço: " + resultado.formatted_address+ "</br>" +
+                           "Endereço: " + rua + ", " + numero + "</br>" +
+                           "" + bairro + ", " + cidade + "</br>" +
+                           "CEP: " + cep + "</br>" +
+                           "Latitude: " + loc.lat + ", Longitude: " + loc.lng + "</br>" +
                            "</div>"
             });
             google.maps.event.addListener(marker, 'click', function() {
