@@ -169,12 +169,17 @@ function findBus(clicked){
                 toastr.success("A busca retornou "+data.DATA.length+" resultados.");
             }
     }).error(function(e){
-		  console.log(e);
 		  mudaBotao(false);
-		  if (e.responseText.indexOf("Server Error") > -1)
+		  clearMarkers();
+		  if (e.responseText.indexOf("Server Error") > -1) {
 		    toastr.warning("O servidor da prefeitura está fora do ar neste momento. Tente novamente mais tarde.");
-		  else
+		  }
+		  if(e.status == 404){
+		    toastr.error("Desculpe, linha " + currentLine + " não encontrada.");
+		  }
+		  else {
 		    toastr.error("Desculpe, ocorreu algum erro. Tente novamente.");
+		  }
     });
 }
 
