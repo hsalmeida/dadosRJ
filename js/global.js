@@ -364,6 +364,10 @@ function desenharPontos(){
           addPontoMarker(coordenada);
         }
 
+      })
+      .fail(function(){
+        console.log("nao possui pontos para esse onibus");
+        limparPontos();
       });
     }
   }
@@ -385,7 +389,7 @@ function addPontoMarker(location) {
   $.ajax({
     dataType: "json",
     url: "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + location.k + "," + location.D+"&sensor=true",
-    async: false
+    async: true
     })
     .done(function(data, status){
 	      console.log (status);
