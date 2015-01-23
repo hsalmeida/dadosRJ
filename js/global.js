@@ -333,8 +333,12 @@ function desenharPontos(){
 
     currentLine = $("#busLine").val();
     if(currentLine != "") {
-      $.ajax("http://dadosabertos.rio.rj.gov.br/apiTransporte/Apresentacao/csv/gtfs/onibus/paradas/gtfs_linha"+ currentLine +"-paradas.csv")
-      .success(function (data, status, jqXHR){
+      $.ajax({
+      dataType: "text",
+      url: "http://dadosabertos.rio.rj.gov.br/apiTransporte/Apresentacao/csv/gtfs/onibus/paradas/gtfs_linha"+ currentLine +"-paradas.csv",
+      async: false
+      })
+      .done(function (data, status){
         //fazer o shape do caminho do onibus
         var obj = Papa.parse(data);
 
@@ -381,7 +385,7 @@ function addPontoMarker(location) {
   $.ajax({
     dataType: "json",
     url: "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + location.k + "," + location.D+"&sensor=true",
-    async: true
+    async: false
     })
     .done(function(data, status){
 	      console.log (status);
