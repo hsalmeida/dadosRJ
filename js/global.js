@@ -142,7 +142,7 @@ google.maps.Map.prototype.clearMarkers = function() {
     this.markers = new Array();
 };
 
-function findBus(clicked){
+function findBus(clicked, toasted){
     currentLine = $("#busLine").val();
     $.getJSON("http://dadosabertos.rio.rj.gov.br/apiTransporte/apresentacao/rest/index.cfm/onibus/" + currentLine,{
         },
@@ -165,8 +165,10 @@ function findBus(clicked){
                 }
 
                 clearTimeout(loadTimeout);
-                loadTimeout = setTimeout(function(){ findBus(false); }, 15000);
-                toastr.success("A busca retornou "+data.DATA.length+" resultados.");
+                loadTimeout = setTimeout(function(){ findBus(false, false); }, 15000);
+                if(toasted) {
+                  toastr.success("A busca retornou "+data.DATA.length+" resultados.");
+                }
             }
     }).error(function(e){
 		  mudaBotao(false);
@@ -257,7 +259,7 @@ $( document ).ready(function() {
       event.preventDefault();
       $("#busLine").blur();
       mudaBotao(true);
-      findBus(true);
+      findBus(true, true);
       desenhaShape();
       desenharPontos();
   });
