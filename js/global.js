@@ -16,6 +16,13 @@ var trafficLayer = new google.maps.TrafficLayer();
 var bikeMarkers = [];
 var bikeMarkersPositions = [];
 
+var pontosMarkers = [];
+var pontosMarkersPositions = [];
+
+
+
+
+
 function addBikeMarker(location, data) {
   bikeMarkersPositions.push(location);
 
@@ -247,6 +254,7 @@ $( document ).ready(function() {
       mudaBotao(true);
       findBus(true);
       desenhaShape();
+      desenharPontos();
   });
 
   $("#searchBox input").hover(
@@ -309,8 +317,95 @@ function atualizaMapa(){
     } else {
       limparBikeRio();
     }
+
+    if(checkOpcoes.pt == "ck ckon") {
+      desenharPontos();
+    } else {
+      limparPontos();
+    }
+
   }
 }
+
+function desenharPontos(){
+
+  if(verificaSelecaoPontos()) {
+
+    currentLine = $("#busLine").val();
+    if(currentLine != "") {
+      $.ajax("http://dadosabertos.rio.rj.gov.br/apiTransporte/Apresentacao/csv/gtfs/onibus/paradas/gtfs_linha"+ currentLine +"-paradas.csv")
+      .success(function (data, status, jqXHR){
+        //fazer o shape do caminho do onibus
+        var obj = Papa.parse(data);
+
+        var arrayDados = obj.data;
+        //removo o cabeçalho
+        arrayDados.shift();
+
+        limparPontos();
+        //linha,descricao,agencia,sequencia,latitude,longitude
+
+        var ordens = [[]];
+        var indiceOrdens = 0;
+
+        var coordenadas = [];
+
+        for(var i = 0; i < arrayDados.length; i++) {
+          var ponto = arrayDados[i];
+          var lat = ponto[4];
+          var lng = ponto[5];
+
+          var coordenada = new google.maps.LatLng(lat, lng);
+
+          addPontoMarker(coordenada);
+        }
+
+      });
+    }
+  }
+
+}
+
+function addPontoMarker(location) {
+  pontosMarkersPositions.push(location);
+
+  var iconUrl = iconBase + "ponto.png";
+  //linha,descricao,agencia,sequencia,latitude,longitude
+  var marker = new google.maps.Marker({
+        position: location,
+        map: map,
+        title: "Ponto de Onibus",
+        icon: new google.maps.MarkerImage(iconUrl)
+  });
+
+  $.ajax({
+    dataType: "json",
+    url: "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + location.k + "," + location.D+"&sensor=true",
+    async: true
+    })
+    .done(function(data, status){
+	      console.log (status);
+        if(data.status != "OK") {
+            console.log("excedeu o limite da API ou algo de errado!");
+            pontosMarkers.push(marker);
+        }else{
+            var resultado = data.results[0]
+
+            marker.info = new google.maps.InfoWindow({
+                  content: '<div style="line-height:1.35;overflow:hidden;white-space:nowrap;">' +
+                           "Endereço: " + resultado.formatted_address+ "</br>" +
+                           "</div>"
+            });
+            google.maps.event.addListener(marker, 'click', function() {
+                marker.info.close();
+                marker.info.open(map, marker);
+            });
+
+            pontosMarkers.push(marker);
+        }
+    });
+}
+
 
 function desenharBikeRio(){
   limparBikeRio();
@@ -344,12 +439,32 @@ function limparBikeRio(){
         bikeMarkers[i].setMap(null);
     }
     bikeMarkers = [];
-    bikeMarkersPositions = []
+    bikeMarkersPositions = [];
+}
+
+function limparPontos(){
+    for (var i = 0; i < pontosMarkers.length; i++) {
+        pontosMarkers[i].setMap(null);
+    }
+    pontosMarkers = [];
+    pontosMarkersPositions = [];
 }
 
 function verificaSelecaoTrajeto() {
   if(checkOpcoes) {
     if(checkOpcoes.tj == "ck ckon") {
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    return false;
+  }
+}
+
+function verificaSelecaoPontos() {
+  if(checkOpcoes) {
+    if(checkOpcoes.pt == "ck ckon") {
       return true;
     } else {
       return false;
