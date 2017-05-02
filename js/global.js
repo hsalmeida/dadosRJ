@@ -140,7 +140,7 @@ google.maps.Map.prototype.clearMarkers = function() {
 
 function findBus(clicked, toasted){
     currentLine = $("#busLine").val();
-    $.getJSON("https://dadosabertos.rio.rj.gov.br/apiTransporte/apresentacao/rest/index.cfm/onibus/" + currentLine,{
+    $.getJSON("https://dadosabertos.rio.rj.gov.br/apiTransporte/apresentacao/rest/index.cfm/onibus/" + currentLine + "?jsoncallback=?",{
         },
         function(data, status){
 			      console.log (status);
