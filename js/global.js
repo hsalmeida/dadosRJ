@@ -140,7 +140,7 @@ google.maps.Map.prototype.clearMarkers = function() {
 
 function findBus(clicked, toasted){
     currentLine = $("#busLine").val();
-    $.getJSON("http://dadosabertos.rio.rj.gov.br/apiTransporte/apresentacao/rest/index.cfm/onibus/" + currentLine,{
+    $.getJSON("https://dadosabertos.rio.rj.gov.br/apiTransporte/apresentacao/rest/index.cfm/onibus/" + currentLine,{
         },
         function(data, status){
 			      console.log (status);
@@ -338,7 +338,7 @@ function desenharPontos(){
     if(currentLine != "") {
       $.ajax({
       dataType: "text",
-      url: "http://dadosabertos.rio.rj.gov.br/apiTransporte/Apresentacao/csv/gtfs/onibus/paradas/gtfs_linha"+ currentLine +"-paradas.csv",
+      url: "https://dadosabertos.rio.rj.gov.br/apiTransporte/Apresentacao/csv/gtfs/onibus/paradas/gtfs_linha"+ currentLine +"-paradas.csv",
       async: false
       })
       .done(function (data, status){
@@ -391,7 +391,7 @@ function addPontoMarker(location) {
 
   $.ajax({
     dataType: "json",
-    url: "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + location.k + "," + location.D+"&sensor=true",
+    url: "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + location.k + "," + location.D+"&sensor=true",
     async: true
     })
     .done(function(data, status){
@@ -435,7 +435,7 @@ function addPontoMarker(location) {
 function desenharBikeRio(){
   limparBikeRio();
 
-  $.getJSON("http://dadosabertos.rio.rj.gov.br/apiTransporte/apresentacao/rest/index.cfm/estacoesBikeRio",{
+  $.getJSON("https://dadosabertos.rio.rj.gov.br/apiTransporte/apresentacao/rest/index.cfm/estacoesBikeRio",{
       },
       function(data, status){
 		      console.log (status);
@@ -512,7 +512,7 @@ function desenhaShape(){
   if(verificaSelecaoTrajeto()) {
 
     currentLine = $("#busLine").val();
-    $.ajax("http://dadosabertos.rio.rj.gov.br/apiTransporte/Apresentacao/csv/gtfs/onibus/percursos/gtfs_linha"+ currentLine +"-shapes.csv")
+    $.ajax("https://dadosabertos.rio.rj.gov.br/apiTransporte/Apresentacao/csv/gtfs/onibus/percursos/gtfs_linha"+ currentLine +"-shapes.csv")
     .success(function (data, status, jqXHR){
       //fazer o shape do caminho do onibus
       var obj = Papa.parse(data);
